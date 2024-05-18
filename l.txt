@@ -1,0 +1,276 @@
+from flask import Flask, request, jsonify, render_template, session, flash, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_wtf import FlaskForm
+from wtforms import StringField, TextAreaField, FileField
+import os
+from werkzeug.utils import secure_filename
+import random
+
+#!!!! LOST AND FOUND SOMEONE LOST SOMETHING LIST IT  !!!
+
+app = Flask(__name__)
+
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
+app.secret_key = "Sq88;&3’m"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://Eddie:Denisdailyvxwx1!@localhost/UserInfo'
+db = SQLAlchemy(app)
+
+
+class UserInfo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), unique=True, nullable=False)
+    password = db.Column(db.String(128), nullable=False)
+    email = db.Column(db.String(320), unique=True, nullable=False)
+    phone_number = db.Column(db.String(20), nullable=True)
+    location = db.Column(db.String(200), nullable=True)
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+
+    def __init__(self, username, password, email, phone_number, location):
+        self.username = username
+        self.set_password(password)
+        self.email = email
+        self.phone_number = phone_number
+        self.location = location
+
+
+class Products(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    details = db.Column(db.String(1000), nullable=True)
+    picture = db.Column(db.String(255), nullable=True)
+    pickup_location = db.Column(db.String(200), nullable=False)
+    contact_info = db.Column(db.String(300), nullable=False)
+
+
+class lost_and_found(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    picture = db.Column(db.String(5000), nullable=False)
+    details = db.Column(db.String(500), nullable=False)
+    pickup_location = db.Column(db.String(200), nullable=False)
+    contact_info = db.Column(db.String(300), nullable=False)
+    bounty = db.Column(db.Integer, nullable=True)
+
+
+class lost_and_found_form(FlaskForm):
+    name = StringField('name-garage')
+    picture = FileField('picture-garage')
+    details = TextAreaField('details-garage')
+    pickup_location = StringField('pickup-location-garage')
+    contact_info = StringField('contact-info-garage')
+    bounty = StringField('bounty-garage')
+
+
+class ProductForm(FlaskForm):
+    name = StringField('name')
+    picture = FileField('picture')
+    details = TextAreaField('details')
+    pickup_location = StringField('pickup_location')
+    contact_info = StringField('contact_info')
+
+
+
+
+
+def save_uploaded_file(file):
+    if file:
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)
+        return file_path
+
+
+@app.route("/")
+def index():
+    return render_template('index.html')
+
+
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    if request.method == "POST":
+        username = request.form.get("signup-username")
+        password = request.form.get("signup-password")
+        email = request.form.get("signup-email")
+        phone_number = request.form.get("signup-phone-number")
+        location = request.form.get("signup-location")
+
+        existing_user = UserInfo.query.filter_by(username=username).first()
+        existing_email = UserInfo.query.filter_by(email=email).first()
+
+        if phone_number:
+            # If a phone number is provided, check if it already exists
+            existing_phone_number = UserInfo.query.filter_by(phone_number=phone_number).first()
+            if existing_phone_number:
+                flash("Phone number is already registered.")
+                return redirect(url_for('index'))
+
+        if existing_user:
+            flash("Username is already taken.")
+        elif existing_email:
+            flash("Email is already registered.")
+        else:
+            new_user = UserInfo(username=username, password=password, email=email, phone_number=phone_number,
+                                location=location)
+            db.session.add(new_user)
+            db.session.commit()
+            session['logged_in'] = True
+            flash("Registration complete. Log In now.")
+
+    return redirect(url_for('index'))
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form.get("login-username")
+        password = request.form.get("login-password")
+
+        existing_user_login = UserInfo.query.filter_by(username=username).first()
+
+        if existing_user_login and existing_user_login.check_password(password):
+            session['existing_user_login.id'] = existing_user_login.id
+            flash('Login successful!')
+            print('Login successful!')
+            session['logged_in'] = True
+            return redirect(url_for('index'))
+        else:
+            flash("Username/email or password incorrect")
+
+    return redirect(url_for('index'))
+
+
+@app.route("/logout", methods=['GET'])
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
+
+
+@app.route("/donate-item", methods=['GET', 'POST'])
+def upload_product():
+    form = ProductForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        details = form.details.data
+        pickup_location = form.pickup_location.data
+        contact_info = form.contact_info.data
+
+        # Handle file upload
+        picture = form.picture.data
+        if picture:
+            record_count = db.session.query(Products).count()
+            filename = secure_filename(str(record_count) + ".png")
+            picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            UPLOAD_FOLDER = app.config['UPLOAD_FOLDER'] = 'static/uploads'
+            image_path = os.path.join(UPLOAD_FOLDER, filename)
+        else:
+            image_path = None
+
+        new_product = Products(
+            name=name,
+            details=details,
+            picture=image_path,  # Save the file path to the database
+            pickup_location=pickup_location,
+            contact_info=contact_info
+        )
+
+        db.session.add(new_product)
+        db.session.commit()
+        return redirect(url_for('index'))
+    return render_template("donate-item.html", form=form)
+
+
+@app.route("/donate-item", methods=["GET"])
+def donateItem():
+    return render_template("donate-item.html")
+
+
+@app.route("/online-lost-and-found", methods=["GET"])
+def laf():
+    return render_template("online-lost-and-found/lost-and-found.html")
+
+
+@app.route("/online-lost-and-found/list-item", methods=["GET"])
+def listItem():
+    form = lost_and_found_form()
+    return render_template("online-lost-and-found/list-item/lost-and-found-item.html", form=form)
+
+
+@app.route("/online-lost-and-found/list-item", methods=['GET', 'POST'])
+def upload_item():
+    form_laf = lost_and_found_form()
+    if form_laf.validate_on_submit() and request.method == "POST":
+        '''name = form_laf.name.data
+        details = form_laf.details.data
+        pickup_location = form_laf.pickup_location.data
+        contact_info = form_laf.contact_info.data
+        bounty = form_laf.bounty.data'''
+
+        name = request.form.get("name-garage")
+        details = request.form.get("details-garage")
+        pickup_location = request.form.get("pickup-location-garage")
+        contact_info = request.form.get("contact-info-garage")
+        bounty = request.form.get("bounty-garage")
+        picture = request.files.get("picture-garage")
+        # Handle file upload
+        '''picture = form_laf.picture.data'''
+        if picture:
+            record_count = int(db.session.query(lost_and_found).count()) + 1
+            filename = secure_filename(str(record_count) + ".png")
+            picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            UPLOAD_FOLDER_LAF = app.config['UPLOAD_FOLDER'] = 'static/uploads-laf'
+            image_path = os.path.join(UPLOAD_FOLDER_LAF, filename)
+        else:
+            image_path = None
+
+        new_product_laf = lost_and_found(
+            name=name,
+            details=details,
+            picture=image_path,
+            pickup_location=pickup_location,
+            contact_info=contact_info,
+            bounty=bounty
+        )
+
+        db.session.add(new_product_laf)
+        db.session.commit()
+        return redirect(url_for('laf'))
+    return render_template("online-lost-and-found/lost-and-found.html")
+
+
+@app.route("/online-lost-and-found", methods=["GET"])
+def online_lost_and_found():
+    return render_template("online-lost-and-found/lost-and-found.html")
+
+
+@app.route("/online-lost-and-found", methods=['GET'])
+def get_products():
+    print("HI")
+
+    list_id = []
+    all_product_ids = [product.id for product in lost_and_found.query.all()]
+    random.shuffle(all_product_ids)
+    num = 3
+    while all_product_ids:
+        random_product_id = all_product_ids.pop()
+        list_id.append(random_product_id)
+    productse = lost_and_found.query.filter(lost_and_found.id.in_(list_id)).all()
+    products = lost_and_found.query.all()
+
+    return render_template('online-lost-and-found/lost-and-found.html', products=products)
+
+
+if __name__ == '__main__':
+    '''with app.app_context():
+        db.drop_all()
+        db.create_all()'''
+    app.run()
+# flask run --host=0.0.0.0   run on all devices
+'''@app.route('/greet/<name>')
+def greet(name):
+    return f'Hello, {name}!'''

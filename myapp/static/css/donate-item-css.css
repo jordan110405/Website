@@ -1,0 +1,70 @@
+* {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'LobsterTwo-regular';
+}
+
+main {
+    background-color: lightgray;
+    padding-bottom: 10em;
+}
+
+#item-name {
+    background-color: white;
+    margin: 2em 18em 0 18em;
+    padding: 1em;
+    border: 1px solid #ABB1B4;
+}
+
+#item-name h2,
+#item-name h6 {
+    color: #828282;
+    padding-bottom: 0.7em;
+    padding-top: 0.5em;
+}
+
+#item-name input {
+    width: 61em;
+    height: 1em;
+    padding: 0.5em;
+    border: 1px solid #828282;
+    margin-top: 1em;
+}
+
+#specifics {
+    height: 10em !important;
+    padding: 0.5em;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    background-color: #C7E4EE;
+}
+
+#locationDropDown {
+    text-align: center;
+}
+
+#locationDropDown h6 {
+    padding: 1em;
+    background-color: white;
+    transition-duration: 0.3s;
+}
+
+#locationDropDown h6:hover {
+    background-color: lightgray;
+    cursor: pointer;
+}
+
+#submit {
+    height: 3em !important;
+    background-color: lightgray;
+    width: 62.3em !important;
+}
+
+#submit:hover {
+    cursor: pointer;
+    background-color: #afadad;
+}

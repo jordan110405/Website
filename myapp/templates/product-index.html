@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Don&Rec</title>
+    <link rel="icon" href="../static/images/Icon.png" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <img src="../static/images/logo1.png" width="110" height="100" id="logoImage">
+        <form id="search-form">
+            <input style="width: 30em; height: 2em; font-size: 1em;" maxlength="50"
+                   type="text" placeholder="Search" id="search-bar" class="signup-login-textbox" autocomplete="off">
+            <input id="submit" type="submit" value="Search">
+        </form>
+    </header>
+    <main>
+        <div class="product-info">
+            <div class="product-image">
+                {% if info.picture %}
+                    <img src="{{ url_for('bp.static', filename='uploads-laf/' + info.picture) }}" alt="Item Picture">
+                {% endif %}
+            </div>
+            <div class="information">
+                <h1>{{ info.name }}</h1>
+                <br>
+                <p>{{ info.details }}</p>
+            </div>
+            <div class="item-found">
+                <button></button>
+            </div>
+        </div>
+    </main>
+</body>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/product-html.css') }}">
+<script src="{{ url_for('static', filename='js/product-html.js') }}"></script>
+</html>
