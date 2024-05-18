@@ -8,11 +8,14 @@
 body{
     background-color: #cde0c4;
 }
+
 header {
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #556B2F;
+    padding-top: 0.6em;
+    padding-bottom: 0.6em;
 }
 
 #logo_house {
@@ -28,6 +31,10 @@ form input,
     color: black;
 }
 
+#login-signup-popup-button {
+    color: rgb(95, 95, 95);
+}
+
 header img {
     margin-top: 0.6em;
     margin-left: 1em;
@@ -35,8 +42,12 @@ header img {
 
 #search-form {
     display: block !important;
-    margin-left: 15% !important;
+    margin-left: 7% !important;
     margin-right: auto !important;
+}
+
+#search-bar {
+    padding: .3em;
 }
 
 form input {
@@ -46,17 +57,15 @@ form input {
 
 #submit {
     border-width: 1px;
-    height: 2.3em;
-    width: 4.3em;
     font-size: 1em;
-    transition: color .27s;
+    padding: 0.8em;
+    transition: background-color .3s;
     background-color: #add8e6;
 }
 
 #submit:hover {
     cursor: pointer;
-    background-color: #6666ff;
-    color: #FFFDD0;
+    background-color: #54e14a;
 }
 
 
@@ -65,15 +74,14 @@ form input {
     border-width: 1px;
     margin-right: 2em;
     height: 2.8em;
-    width: 7em;
-    transition: color .27s;
+    width: 11em;
+    transition: background-color .27s;
     background-color: #add8e6;
 }
 
 #login-signup-popup-button:hover{
     cursor: pointer;
-    background-color: #6666ff;
-    color: #FFFDD0;
+    background-color: #54e14a;
 }
 
 
@@ -83,13 +91,12 @@ form input {
     border-width: 1px;
     height: 2.8em;
     width: 10em;
-    transition: color .27s;
+    transition: background-color .27s;
     background-color: #add8e6;
 }
 #find-people-near-me:hover {
     cursor: pointer;
-    background-color: #6666ff;
-    color: #FFFDD0;
+    background-color: #54e14a;
 }
 
 #login-signup-popup {

@@ -16,25 +16,39 @@
                 <h2>Item name</h2>
                 <input type="text" placeholder="Click here to type" name="name" required>
                 <br>
-                <hr>
+                <br>
                 <h2>Item image</h2>
                 <input type="file" name="picture" placeholder="Upload image">
                 <br>
-                <hr>
+                <br>
+                <h2>Item type</h2>
+                <h6>Choose the option that best fits your item</h6>
+                <div class="radio-group">
+                    <!-- Radio button for Items -->
+                    <div>
+                        <input type="radio" class="rad_type radio" name="rad_type" value="items">
+                        <label for="rad_type">Items</label>
+                    </div>
+                    <br>
+                    <div>
+                        <!-- Radio button for Services -->
+                        <input type="radio" class="rad_type radio" name="rad_type" value="services">
+                        <label for="rad_type">Services</label>
+                    </div>
+                </div>
+                <br>
                 <br>
                 <h2>Item details</h2>
                 <h6>List all the details about your item.</h6>
                 <textarea id="specifics" name="details" rows="10" cols="120" placeholder="Click here to type"></textarea>
                 <br>
                 <br>
-                <hr>
                 <br>
                 <h2>Location</h2>
                 <h6>Please enter a location where people can pick up your item.</h6>
                 <input type="text" id="locationInput" name="pickup_location" placeholder="Click here to type">
                 <div id="locationDropDown"></div>
                 <br>
-                <hr>
                 <br>
                 <h2>Contact Info</h2>
                 <h6>Enter your email or your phone number</h6>

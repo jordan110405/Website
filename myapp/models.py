@@ -1,5 +1,7 @@
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
+from wtforms import StringField, TextAreaField, RadioField, FileField
+from wtforms.validators import DataRequired
 
 
 class UserInfo(db.Model):
@@ -31,7 +33,7 @@ class Products(db.Model):
     picture = db.Column(db.String(255), nullable=True)
     pickup_location = db.Column(db.String(200), nullable=False)
     contact_info = db.Column(db.String(300), nullable=False)
-    #add a stock here
+    rad_type = db.Column(db.String(50), nullable=False)
 
 
 class lost_and_found(db.Model):

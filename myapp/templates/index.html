@@ -10,7 +10,7 @@
         <img id="logo_house" src="../static/images/LongLogo.png" height="50">
         <form id="search-form">
             <input style="width: 30em; height: 2em; font-size: 1em;" maxlength="50"
-                   type="text" placeholder="Search" id="search-bar" class="signup-login-textbox" autocomplete="off">
+                   type="text" placeholder="What do you want to find?" id="search-bar" class="signup-login-textbox" autocomplete="off">
             <input id="submit" type="submit" value="Search">
         </form>
 
@@ -20,17 +20,14 @@
             </div>
         {% else %}
             <button type="button" id="login-signup-popup-button" onclick="openPopup()">Login/Signup</button>
-            <a href="{{ url_for('bp.online_lost_and_found') }}">Online </a>
         {% endif %}
 
         <div id="profile-popup" style="display: none;" onmouseover="myProfilePopup()" onmouseout="myProfilePopupOff()">
             <h3>{{ user_info }}</h3>
             <a href="{{ url_for('bp.donateItem') }}">Donate</a>
             <a href="{{ url_for('bp.logout') }}">Log Out</a>
-            <a href="{{ url_for('bp.online_lost_and_found') }}">online_lost_and_found</a>
         </div>
 
-        <button type="button" id="find-people-near-me" onclick="getIPAddress()">Find people near me</button>
     </header>
     <main>
         <div class="products">
@@ -67,11 +64,9 @@
                     <br><br>
                     <input type="number" id="signup-phone-number" class="signup-login-textbox" name="signup-phone-number" placeholder="Phone Number" autocomplete="off">
                     <br><br>
-                    <input type="text" id="signup-location" class="signup-login-textbox" name="signup-location" placeholder="Location *not required" autocomplete="off">
                     <br><br>
                     <button type="Submit" id="signup-submit">Continue</button>
                 </form>
-                <div id="locationDropdown"></div>
             </div>
     </div>
     

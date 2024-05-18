@@ -124,6 +124,7 @@ def upload_product():
         details = form.details.data
         pickup_location = form.pickup_location.data
         contact_info = form.contact_info.data
+        rad_type = form.rad_type.data
 
         # Handle file upload
         picture = form.picture.data
@@ -142,7 +143,8 @@ def upload_product():
             details=details,
             picture=filename,  # Save the file path to the database
             pickup_location=pickup_location,
-            contact_info=contact_info
+            contact_info=contact_info,
+            rad_type=rad_type,
         )
 
         db.session.add(new_product)

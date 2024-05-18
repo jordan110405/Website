@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, FileField
+from wtforms import StringField, TextAreaField, FileField, RadioField
+from wtforms.validators import DataRequired
 
 
 class lost_and_found_form(FlaskForm):
@@ -17,3 +18,4 @@ class ProductForm(FlaskForm):
     details = TextAreaField('details')
     pickup_location = StringField('pickup_location')
     contact_info = StringField('contact_info')
+    rad_type = RadioField('Type', choices=[('items', 'Items'), ('services', 'Services')], validators=[DataRequired()])

@@ -25,11 +25,15 @@ main {
 }
 
 #item-name input {
-    width: 61em;
+    width: 54vw;
     height: 1em;
     padding: 0.5em;
     border: 1px solid #828282;
     margin-top: 1em;
+}
+
+textarea {
+    width: 54vw;
 }
 
 #specifics {
@@ -67,4 +71,32 @@ header {
 #submit:hover {
     cursor: pointer;
     background-color: #afadad;
+}
+
+
+
+.radio-group {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.radio-group div {
+    display: flex;
+    align-items: flex-start;
+    width: auto;
+    flex-direction: row;
+}
+
+.radio {
+    width: auto !important;
+    margin-right: -5px; /* Adds space between the radio button and its label */
+}
+
+.radio-group label {
+    margin-top: 13%;
+    margin-left: 2em;
+    overflow-x: visible;
+    position: relative;
 }
