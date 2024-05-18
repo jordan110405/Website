@@ -1,19 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     overflow-x: visible;
 }
-
+body{
+    background-color: #cde0c4;
+}
 header {
     display: flex;
+    justify-content: center;
     align-items: center;
-    background-color: #C7E4EE;
+    background-color: #556B2F;
 }
+
+#logo_house {
+    position: relative;
+    margin-right: auto; /* Pushes the logo to the left */
+}
+
 
 form input,
 #login-signup-popup-button,
 #find-people-near-me {
-    font-family: 'Georgia';
+    font-family: 'Special Elite', cursive;
     color: black;
 }
 
