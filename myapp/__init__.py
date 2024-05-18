@@ -15,7 +15,7 @@ db = SQLAlchemy()
 def create_app():
     app = Flask(__name__, static_url_path='/static')
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://Eddie:Denisdailyvxwx1!@localhost/UserInfo'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://Eddie:!@localhost/UserInfo'
     app.config['UPLOAD_FOLDER'] = 'uploads'
     app.config['UPLOAD_FOLDER_LAF'] = 'uploads-laf'
     app.secret_key = "Sq88;&3’m"
