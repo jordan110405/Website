@@ -23,6 +23,7 @@ h1 {
     top: 10%;
     left: 50%;
     transform: translateX(-50%);
+    text-wrap: nowrap;
 }
 
 h3{
