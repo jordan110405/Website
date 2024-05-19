@@ -92,3 +92,15 @@ function displayItems(items) {
         productsContainer.appendChild(itemElement);
     });
 }
+
+
+function openPopup() {
+    const popup = document.getElementById('login-signup-popup');
+    popup.style.display = 'block';
+}
+
+// Function to close the popup
+function closePopup() {
+    const popup = document.getElementById('login-signup-popup');
+    popup.style.display = 'none';
+}
