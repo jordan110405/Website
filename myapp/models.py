@@ -37,6 +37,17 @@ class Products(db.Model):
     category = db.Column(db.String(50), nullable=False)
     blue = db.Column(db.Integer, nullable=True)
 
+class ProductsService(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    details = db.Column(db.String(1000), nullable=True)
+    picture = db.Column(db.String(255), nullable=True)
+    pickup_location = db.Column(db.String(200), nullable=False)
+    contact_info = db.Column(db.String(300), nullable=False)
+    rad_type = db.Column(db.String(50), nullable=False)
+    category = db.Column(db.String(50), nullable=False)
+    blue = db.Column(db.Integer, nullable=True)
+
 
 class lost_and_found(db.Model):
     id = db.Column(db.Integer, primary_key=True)

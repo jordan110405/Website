@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         var query = document.getElementById('search-bar').value;
 
-        fetch(`/search/${query}`, {
+        fetch(`/service/search/${query}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function fetchAllItems() {
-    fetch(`/get_all_items`, {
+    fetch(`/get_all_items_service`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -51,7 +51,7 @@ function fetchAllItems() {
 }
 
 function fetchItems(category) {
-    fetch(`/get_items/${category}`, {
+    fetch(`/service/get_items/${category}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -86,7 +86,7 @@ function displayItems(items) {
         `;
 
         itemElement.addEventListener('click', () => {
-            window.location.href = `/items/${item.id}`;
+            window.location.href = `/service/${item.id}`;
         });
 
         productsContainer.appendChild(itemElement);

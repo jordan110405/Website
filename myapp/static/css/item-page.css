@@ -126,64 +126,31 @@ form input {
     padding: 1em 2em 1em 1em;
 }
 
-#signup-or-login {
-    background-color: white;
-    padding: 1em;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    margin-right: 25%;
-    margin-left: 25%;
-    flex: 1;
-    text-align: center;
-}
-
-#login-username,
-#login-password,
-#signup-username,
-#signup-password,
-#signup-submit,
-#signup-email,
-#signup-phone-number,
-#login-submit,
-#signup-location {
-    border-radius: 1px;
-    border: lightgray solid;
-    height: 48px !important;
-    width: 15em !important;
-    padding: 0 0 0 1em;
-}
-
-#signup-submit,
-#login-submit {
-    border-radius: 10px !important;
-    background-color: lightblue;
-    text-align: center;
-    width: 16.3em !important;
-}
-
-#signup-submit:hover,
-#login-submit:hover {
-    cursor: pointer;
-    background-color: #5cc3e5;
-}
-
-
-#xla {
+main {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
     position: absolute;
-    font-size: 2.5em;
-    top: 0.1em;
-    right: 0.5em;
-    cursor: pointer;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+
 }
 
-#profile-container {
-    position: relative;
-    display: inline-block;
+img {
+    display: flex;
 }
 
-#profile-icon {
-    cursor: pointer;
-    margin-right: 9em;
+.text {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: center;
+}
+
+h1 {
+    font-size: 3em;
+    font-weight: 900;
 }
 
 #profile-popup {
@@ -206,81 +173,12 @@ form input {
     display: block !important;
 }
 
-#locationDropdown {
-    text-align: center;
+#profile-container {
+    position: relative;
+    display: inline-block;
 }
 
-#locationDropdown h6 {
-    padding: 1em;
-    background-color: white;
-    transition-duration: 0.3s;
-}
-
-#locationDropdown h6:hover {
-    background-color: lightgray;
+#profile-icon {
     cursor: pointer;
-}
-
-.categories {
-    position: fixed;
-    height: 80vh;
-    background-color: #AEC6CF;
-    padding: 1em 0.5em 1em 1em;
-    border-radius: 5px;
-    float: left;
-    width: 30%; /* Adjust as needed */
-    transition: all 0.25;
-}
-
-.categories div:hover {
-    background-color: #3fa8ce;
-}
-
-.products {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    margin-left: 33.33%; /* Push it to the right */
-    flex-shrink: 1;
-    gap: 15px;
-}
-
-.product-items {
-    background-color: rgb(108, 108, 250);
-    border: 1px solid lightgray;
-    padding: 0 0.4em 0.5em 0.4em;
-    border-radius: 10px;
-    z-index: 1;
-    width: 20vw;
-    height: auto;
-    transition: all 0.15s linear, z-index 0s linear;
-}
-
-.product-items:hover {
-    transform: scale(1.02, 1.02);
-    box-shadow: rgba(149, 157, 165, 0.4) 0px 8px 24px;
-    cursor: pointer;
-    z-index: 2;
-}
-
-.product-items img {
-    width: 18vw;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-}
-
-.category {
-    display: flex;
-    gap: 1em;
-    align-items: center;
-    cursor: pointer;
-    padding: 10px;
-}
-
-.category img {
-  width: 30px; /* Adjust icon size as needed */
-  height: 30px;
-  margin-right: 10px;
+    margin-right: 9em;
 }

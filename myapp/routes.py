@@ -1,47 +1,89 @@
 from flask import Blueprint, request, render_template, session, flash, redirect, url_for, current_app, \
     send_from_directory, jsonify
 from myapp import db, create_app
-from .models import lost_and_found, UserInfo, Products
+from .models import lost_and_found, UserInfo, Products, ProductsService
 from .forms import ProductForm, lost_and_found_form
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select
 import os
 from werkzeug.utils import secure_filename
-import random
+import traceback
 
 bp = Blueprint('bp', __name__, static_folder='',
                static_url_path='/static')  # bp = Blueprint('bp', __name__, static_folder='static', static_url_path='/static')
 UPLOAD_FOLDER = "myapp/static/uploads"
 UPLOAD_FOLDER_LAF = 'myapp/static/uploads-laf'
 
-
 @bp.route("/")
 def index():
+    return render_template('index.html')
+
+@bp.route("/item")
+def item():
     user_id = session.get('existing_user_login.id')
     products = Products.query.all()
-    print(user_id)
     if user_id:
         info = UserInfo.query.filter_by(id=user_id).first()
         if info:
             user_info = info.username
-            print(user_info)
-            return render_template('index.html', products=products, user_info=user_info)
-        else:
-            return "User info not found", 404
-    else:
-        return render_template('index.html', products=products)
+            return render_template('item.html', products=products, user_info=user_info)
+    return render_template('item.html', products=products)
+    
+
+@bp.route('/get_all_items', methods=['GET'])
+def get_all_items():
+    try:
+        products = Products.query.all()
+        products_list = [{'id': product.id, 'name': product.name, 'picture': product.picture, 'blue': product.blue, 'details': product.details} for product in products]
+        return jsonify(products_list)
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({'error': 'An internal server error occurred'}), 500
+    
+@bp.route('/get_all_items_service', methods=['GET'])
+def get_all_items_service():
+    try:
+        products = ProductsService.query.all()
+        products_list = [{'id': product.id, 'name': product.name, 'picture': product.picture, 'blue': product.blue, 'details': product.details} for product in products]
+        return jsonify(products_list)
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({'error': 'An internal server error occurred'}), 500
+
+
+@bp.route("/service")
+def service():
+    user_id = session.get('existing_user_login.id')
+    products = ProductsService.query.all()
+    if user_id:
+        info = UserInfo.query.filter_by(id=user_id).first()
+        if info:
+            user_info = info.username
+
+            return render_template('service.html', products=products, user_info=user_info)
+    return render_template('service.html', products=products)
 
 
 
 @bp.route("/donate-item", methods=["GET"])
 def donateItem():
     form = ProductForm()
-    return render_template("donate-item.html", form=form)
+    return render_template("item-form.html", form=form)
 
-@bp.route("/<productID>", methods=['GET', 'POST'])
+@bp.route("/service-item", methods=["GET"])
+def serviceItem():
+    form = ProductForm()
+    return render_template("service-form.html", form=form)
+
+@bp.route("/items/<productID>", methods=['GET', 'POST'])
 def product_ind(productID):
     info = Products.query.filter_by(id=productID).first()
-    return render_template("product-index.html", info=info)
+    return render_template("product-item.html", info=info)
+
+@bp.route("/service/<productID>", methods=['GET', 'POST'])
+def product_indService(productID):
+    info = ProductsService.query.filter_by(id=productID).first()
+    return render_template("service-item.html", info=info)
 
 
 @bp.route("/signup", methods=["GET", "POST"])
@@ -105,10 +147,9 @@ def logout():
     return redirect(url_for('bp.index'))
 
 
-@bp.route("/donate-item", methods=['GET', 'POST'])
+@bp.route("/donate-item", methods=["GET", "POST"])
 def upload_product():
     form = ProductForm()
-    print("donate-item")
     if form.validate_on_submit():
         name = form.name.data
         details = form.details.data
@@ -118,36 +159,48 @@ def upload_product():
         category = form.category.data
         green = form.green_caps.data
         blue = form.blue_caps.data
-        print("1")
         total_blue = blue + (green * 4)
-        print(total_blue)
+
         # Handle file upload
         picture = form.picture.data
         if picture:
             record_count = db.session.query(Products).count()
             filename = secure_filename(str(record_count) + ".png")
-            # UPLOAD_FOLDER = current_app.config['UPLOAD_FOLDER'] = 'myapp/static/uploads'
-            target_dir = "myapp/static/uploads"
-            image_path = os.path.join(target_dir, filename)
+            image_path = os.path.join(UPLOAD_FOLDER, filename)
             picture.save(image_path)
         else:
-            image_path = None
+            filename = None
 
-        new_product = Products(
-            name=name,
-            details=details,
-            picture=filename,  # Save the file path to the database
-            pickup_location=pickup_location,
-            contact_info=contact_info,
-            rad_type=rad_type,
-            category=category,
-            blue=total_blue,
-        )
+        if rad_type.lower() == "items":
+            new_product = Products(
+                name=name,
+                details=details,
+                picture=filename,
+                pickup_location=pickup_location,
+                contact_info=contact_info,
+                rad_type=rad_type,
+                category=category,
+                blue=total_blue,
+            )
+            db.session.add(new_product)
+            db.session.commit()
+            return redirect(url_for('bp.item'))
+        else:
+            new_service = ProductsService(
+                name=name,
+                details=details,
+                picture=filename,
+                pickup_location=pickup_location,
+                contact_info=contact_info,
+                rad_type=rad_type,
+                category=category,
+                blue=total_blue,
+            )
+            db.session.add(new_service)
+            db.session.commit()
+            return redirect(url_for('bp.service'))
 
-        db.session.add(new_product)
-        db.session.commit()
-        return redirect(url_for('bp.index'))
-    return render_template("donate-item.html", form=form)
+    return render_template("item-form.html", form=form)
 
 @bp.route('/uploads-laf/<filename>')
 def uploaded_file(filename):
@@ -173,3 +226,49 @@ def get_items(category):
 
     # Return the items as JSON response
     return jsonify(items_list)
+
+@bp.route('/service/get_items/<category>')
+def service_get_items(category):
+    # Query the database to fetch items based on the category
+    if category == "all":
+        items = ProductsService.query.all()
+        items_list = [{'id': item.id, 'name': item.name, 'picture': item.picture, 'blue': item.blue, 'details': item.details} for item in items]
+        return jsonify(items_list)
+    
+    items = ProductsService.query.filter_by(category=category).all()
+
+    # Convert items to a list of dictionaries
+    items_list = [{'id': item.id, 'name': item.name, 'picture': item.picture, 'blue': item.blue, 'details': item.details} for item in items]
+
+    # Return the items as JSON response
+    return jsonify(items_list)
+
+
+@bp.route('/search/<query>', methods=['GET'])
+def search(query):
+    try:
+        # Query the database to find products where title or description contains the query
+        results = Products.query.filter((Products.name.like(f'%{query}%')) | (Products.details.like(f'%{query}%'))).all()
+
+        # Convert results to a list of dictionaries
+        results_list = [{'id': result.id, 'name': result.name, 'blue': result.blue, 'picture': result.picture, 'details': result.details} for result in results]
+
+        return jsonify(results_list)
+    except Exception as e:
+        traceback.print_exc()  # This will print the traceback to the console for debugging
+        return jsonify({'error': 'An internal server error occurred'}), 500
+
+
+@bp.route('/service/search/<query>', methods=['GET'])
+def search_service(query):
+    try:
+        # Query the database to find products where title or description contains the query
+        results = ProductsService.query.filter((ProductsService.name.like(f'%{query}%')) | (ProductsService.details.like(f'%{query}%'))).all()
+
+        # Convert results to a list of dictionaries
+        results_list = [{'id': result.id, 'name': result.name, 'blue': result.blue, 'picture': result.picture, 'details': result.details} for result in results]
+
+        return jsonify(results_list)
+    except Exception as e:
+        traceback.print_exc()  # This will print the traceback to the console for debugging
+        return jsonify({'error': 'An internal server error occurred'}), 500
