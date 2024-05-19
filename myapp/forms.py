@@ -19,4 +19,17 @@ class ProductForm(FlaskForm):
     pickup_location = StringField('pickup_location')
     contact_info = StringField('contact_info')
     rad_type = RadioField('Type', choices=[('items', 'Items'), ('services', 'Services')], validators=[DataRequired()])
-    category = SelectField('Category', choices=[('apparel', 'Apparel'), ('electronics', 'Electronics')], validators=[DataRequired()])
+    category = SelectField('Category', choices=[
+        ('weapons', 'Weapons'),
+        ('food', 'Food'),
+        ('medicine', 'Medicine'),
+        ('shelter', 'Shelter'),
+        ('tools', 'Tools'),
+        ('clothing', 'Clothing'),
+        ('transportation', 'Transportation'),
+        ('communication', 'Communication'),
+        ('defense', 'Defense')
+    ], validators=[DataRequired()])
+
+    blue_caps = SelectField('Blue Caps', choices=[(i, str(i)) for i in range(401)], coerce=int)
+    green_caps = SelectField('Green Caps', choices=[(i, str(i)) for i in range(401)], coerce=int)

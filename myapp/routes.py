@@ -19,11 +19,12 @@ UPLOAD_FOLDER_LAF = 'myapp/static/uploads-laf'
 def index():
     user_id = session.get('existing_user_login.id')
     products = Products.query.all()
-
+    print(user_id)
     if user_id:
         info = UserInfo.query.filter_by(id=user_id).first()
         if info:
             user_info = info.username
+            print(user_info)
             return render_template('index.html', products=products, user_info=user_info)
         else:
             return "User info not found", 404
@@ -71,6 +72,7 @@ def signup():
                                 location=location)
             db.session.add(new_user)
             db.session.commit()
+            session['existing_user_login.id'] = new_user.id 
             session['logged_in'] = True
             flash("Registration complete. Log In now.")
 
@@ -106,6 +108,7 @@ def logout():
 @bp.route("/donate-item", methods=['GET', 'POST'])
 def upload_product():
     form = ProductForm()
+    print("donate-item")
     if form.validate_on_submit():
         name = form.name.data
         details = form.details.data
@@ -113,7 +116,11 @@ def upload_product():
         contact_info = form.contact_info.data
         rad_type = form.rad_type.data
         category = form.category.data
-
+        green = form.green_caps.data
+        blue = form.blue_caps.data
+        print("1")
+        total_blue = blue + (green * 4)
+        print(total_blue)
         # Handle file upload
         picture = form.picture.data
         if picture:
@@ -134,6 +141,7 @@ def upload_product():
             contact_info=contact_info,
             rad_type=rad_type,
             category=category,
+            blue=total_blue,
         )
 
         db.session.add(new_product)
@@ -153,11 +161,15 @@ def uploaded_thing(filename_ind):
 @bp.route('/get_items/<category>')
 def get_items(category):
     # Query the database to fetch items based on the category
-    # For example, assuming you have a model named 'Item' with a 'category' field
+    if category == "all":
+        items = Products.query.all()
+        items_list = [{'id': item.id, 'name': item.name, 'picture': item.picture, 'blue': item.blue, 'details': item.details} for item in items]
+        return jsonify(items_list)
+    
     items = Products.query.filter_by(category=category).all()
 
-    # Convert items to a list of dictionaries (or any other format you prefer)
-    items_list = [{'name': item.name, 'category': item.category} for item in items]
+    # Convert items to a list of dictionaries
+    items_list = [{'id': item.id, 'name': item.name, 'picture': item.picture, 'blue': item.blue, 'details': item.details} for item in items]
 
     # Return the items as JSON response
     return jsonify(items_list)

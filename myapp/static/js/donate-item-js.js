@@ -52,3 +52,25 @@ inputField.addEventListener('input', debounce(function() {
 document.getElementById("logo_house").addEventListener("click", function() {
     window.location.href = "/";
 });
+
+const blueCapsDropdown = document.getElementById('blue-caps');
+const greenCapsDropdown = document.getElementById('green-caps');
+
+for (let i = 0; i <= 400; i++) {
+    const blueOption = document.createElement('option');
+    blueOption.value = i;
+    blueOption.text = i;
+    blueCapsDropdown.appendChild(blueOption);
+
+    const greenOption = document.createElement('option');
+    greenOption.value = i;
+    greenOption.text = i;
+    greenCapsDropdown.appendChild(greenOption);
+}
+
+function calculateTotalBlueCaps() {
+    const blueCaps = parseInt(blueCapsDropdown.value);
+    const greenCaps = parseInt(greenCapsDropdown.value);
+    const totalBlueCaps = blueCaps + (greenCaps * 4);
+    document.getElementById('total-blue-caps').innerText = totalBlueCaps;
+}

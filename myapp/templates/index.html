@@ -5,6 +5,7 @@
     <title>ApocAlley</title>
     <link rel="icon" href="../static/images/Icon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://kit.fontawesome.com/66e0dacf69.js" crossorigin="anonymous"></script>
 </head> 
 <body>
     <header>
@@ -21,37 +22,67 @@
                     <path fill="currentColor" d="M12 3a4.5 4.5 0 00-4.5 4.5H9a3 3 0 013-3V3zM7.5 7.5A4.5 4.5 0 0012 12v-1.5a3 3 0 01-3-3H7.5zM12 12a4.5 4.5 0 004.5-4.5H15a3 3 0 01-3 3V12zm4.5-4.5A4.5 4.5 0 0012 3v1.5a3 3 0 013 3h1.5zM4.5 21v-3H3v3h1.5zm0-3a3 3 0 013-3v-1.5A4.5 4.5 0 003 18h1.5zm3-3h9v-1.5h-9V15zm9 0a3 3 0 013 3H21a4.5 4.5 0 00-4.5-4.5V15zm3 3v3H21v-3h-1.5z"></path>
                 </svg>
                 <div id="profile-popup" class="w3-dropdown-content w3-bar-block w3-border">
-                    <a href="{{ url_for ('bp.donateItem') }}" class="w3-bar-item w3-button">Donate</a>
+                    <p style="overflow: clip;"><strong>{{ user_info }}</strong></p>
+                    <a href="{{ url_for ('bp.donateItem') }}" class="w3-bar-item w3-button">Post</a>
                     <a href="{{ url_for('bp.logout') }}" class="w3-bar-item w3-button">Logout</a>
                 </div>
             </div>
         {% else %}
             <button type="button" id="login-signup-popup-button" onclick="openPopup()">Login/Signup</button>
         {% endif %}
-
-        <div id="profile-popup" style="display: none;">
-            <a style="overflow: hidden;">{{ user_info }}</a>
-            <a href="{{ url_for('bp.donateItem') }}">Donate</a>
-            <a href="{{ url_for('bp.logout') }}">Log Out</a>
-        </div>
     </header>
     <main>
         <div class="categories">
             <h2>Categories</h2>
-            <div class="category" onclick="fetchItems('apparel')">
-                <img src="apparel-icon.png" alt="Apparel Icon">
-                <span>Apparel</span>
+            <div class="category" onclick="fetchItems('all')">
+                <i data-visualcompletion="css-img" class="x1b0d499 xaj1gnb" aria-hidden="true" style="background-image: url(&quot;https://static.xx.fbcdn.net/rsrc.php/v3/yu/r/YA4jJJDTgFm.png&quot;); background-position: 0px -294px; background-size: 21px 433px; width: 20px; height: 20px; background-repeat: no-repeat; display: inline-block;"></i>
+                <span>All</span>
             </div>
-            <div class="category" onclick="fetchItems('electronics')">
-                <img src="electronics-icon.png" alt="Electronics Icon">
-                <span>Electronics</span>
+            <br>
+            <div class="category" onclick="fetchItems('weapons')">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Weapons</span>
+            </div>
+            <div class="category" onclick="fetchItems('food')">
+                <img src="food-icon.png" alt="Food Icon">
+                <span>Food</span>
+            </div>
+            <div class="category" onclick="fetchItems('medicine')">
+                <img src="medicine-icon.png" alt="Medicine Icon">
+                <span>Medicine</span>
+            </div>
+            <div class="category" onclick="fetchItems('shelter')">
+                <img src="shelter-icon.png" alt="Shelter Icon">
+                <span>Shelter</span>
+            </div>
+            <div class="category" onclick="fetchItems('tools')">
+                <img src="tools-icon.png" alt="Tools Icon">
+                <span>Tools</span>
+            </div>
+            <div class="category" onclick="fetchItems('clothing')">
+                <img src="clothing-icon.png" alt="Clothing Icon">
+                <span>Clothing</span>
+            </div>
+            <div class="category" onclick="fetchItems('transportation')">
+                <img src="transportation-icon.png" alt="Transportation Icon">
+                <span>Transportation</span>
+            </div>
+            <div class="category" onclick="fetchItems('communication')">
+                <img src="communication-icon.png" alt="Communication Icon">
+                <span>Communication</span>
+            </div>
+            <div class="category" onclick="fetchItems('defense')">
+                <img src="defense-icon.png" alt="Defense Icon">
+                <span>Defense</span>
             </div>
         </div>
+        
         <div class="products">
             {% for product in products %}
                 <div id="item{{ product.id }}" class="product-items" onclick="itemClick({{ product.id }})">
                     <h2>{{ product.name }}</h2>
                     <img src="{{ url_for('bp.static', filename='uploads/' + product.picture) }}" alt="Item Picture" height="200">
+                    <h3><strong>{{ product.blue }}</strong> blue caps</h3>
                     <p>{{ product.details }}</p>
                 </div>
             {% endfor %}
@@ -93,5 +124,4 @@
 <script src="../../../static/js/script.js"></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='js/script.js') }}">
-
 </html>

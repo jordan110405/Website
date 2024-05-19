@@ -21,7 +21,22 @@
                 <br><br>
                 <h2>Item details</h2>
                 <h6>List all the details about your item.</h6>
-                <textarea id="specifics" name="details" rows="10" cols="120" placeholder="Click here to type"></textarea>
+                <textarea id="specifics" name="details" rows="10" cols="120" placeholder="Click here to type" required></textarea>
+                <br><br>
+                <h2>Cost</h2>
+                <h6>Give your price in the number of blue and green caps</h6>
+                <div class="container">
+                    <label for="blue-caps">Blue Caps:</label>
+                    <select id="blue-caps" name="blue_caps">
+                        <!-- Options will be populated by JavaScript -->
+                    </select>
+                </div>
+                <div class="container">
+                    <label for="green-caps">Green Caps:</label>
+                    <select id="green-caps" name="green_caps">
+                        <!-- Options will be populated by JavaScript -->
+                    </select>
+                </div>
                 <br><br>
                 <h2>Item type</h2>
                 <h6>Choose the option that best fits your item</h6>
@@ -40,12 +55,16 @@
                 </div>
                 <br><br>
                 <h2>Category</h2>
-                <select id="category">
-                    <option value="apparel">Apparel</option>
-                    <option value="electronics">Electronics</option>
-                    <option value="books">Books</option>
-                    <option value="home">Home</option>
-                    <!-- Add more options as needed -->
+                <select id="category" name="category">
+                    <option value="weapons">Weapons</option>
+                    <option value="food">Food</option>
+                    <option value="medicine">Medicine</option>
+                    <option value="shelter">Shelter</option>
+                    <option value="tools">Tools</option>
+                    <option value="clothing">Clothing</option>
+                    <option value="transportation">Transportation</option>
+                    <option value="communication">Communication</option>
+                    <option value="defense">Defense</option>
                 </select>
                 <br><br>
                 <h2>Location</h2>
