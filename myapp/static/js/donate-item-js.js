@@ -49,6 +49,6 @@ inputField.addEventListener('input', debounce(function() {
 }, 300));
 
 
-document.getElementById("logoImage").addEventListener("click", function() {
+document.getElementById("logo_house").addEventListener("click", function() {
     window.location.href = "/";
 });

@@ -6,7 +6,7 @@
 }
 
 main {
-    background-color: lightgray;
+    background-color: #cde0c4;
     padding-bottom: 10em;
 }
 
@@ -44,7 +44,7 @@ textarea {
 header {
     display: flex;
     align-items: center;
-    background-color: #C7E4EE;
+    background-color: #556B2F;
 }
 
 #locationDropDown {
