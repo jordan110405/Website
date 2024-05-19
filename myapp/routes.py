@@ -1,5 +1,5 @@
 from flask import Blueprint, request, render_template, session, flash, redirect, url_for, current_app, \
-    send_from_directory
+    send_from_directory, jsonify
 from myapp import db, create_app
 from .models import lost_and_found, UserInfo, Products
 from .forms import ProductForm, lost_and_found_form
@@ -36,19 +36,6 @@ def index():
 def donateItem():
     form = ProductForm()
     return render_template("donate-item.html", form=form)
-
-
-@bp.route("/online-lost-and-found/list-item", methods=["GET"])
-def listItem():
-    form = lost_and_found_form()
-    return render_template("online-lost-and-found/list-item/lost-and-found-item.html", form=form)
-
-
-@bp.route("/online-lost-and-found/<productID>", methods=['GET', 'POST'])
-def product(productID):
-    info = lost_and_found.query.filter_by(id=productID).first()
-    return render_template("online-lost-and-found/Item-Found.html", info=info)
-
 
 @bp.route("/<productID>", methods=['GET', 'POST'])
 def product_ind(productID):
@@ -125,6 +112,7 @@ def upload_product():
         pickup_location = form.pickup_location.data
         contact_info = form.contact_info.data
         rad_type = form.rad_type.data
+        category = form.category.data
 
         # Handle file upload
         picture = form.picture.data
@@ -145,52 +133,13 @@ def upload_product():
             pickup_location=pickup_location,
             contact_info=contact_info,
             rad_type=rad_type,
+            category=category,
         )
 
         db.session.add(new_product)
         db.session.commit()
         return redirect(url_for('bp.index'))
     return render_template("donate-item.html", form=form)
-
-
-@bp.route("/online-lost-and-found/list-item", methods=['GET', 'POST'])
-def upload_item():
-    form_laf = lost_and_found_form()
-    if form_laf.validate_on_submit() and request.method == "POST":
-        name = request.form.get("name-garage")
-        details = request.form.get("details-garage")
-        pickup_location = request.form.get("pickup-location-garage")
-        contact_info = request.form.get("contact-info-garage")
-        bounty = request.form.get("bounty-garage")
-        picture = request.files.get("picture-garage")
-        # Handle file upload
-        '''picture = form_laf.picture.data'''
-        if picture:
-            record_count = int(db.session.query(lost_and_found).count()) + 0
-            pic_name = str(record_count) + ".png"
-            filename = secure_filename(pic_name)
-            # UPLOAD_FOLDER_LAF = current_app.config['UPLOAD_FOLDER_LAF'] = 'uploads-laf'
-            target_dir = 'myapp/static/uploads-laf'
-            # picture.save(os.path.join(current_app.config['UPLOAD_FOLDER_LAF'], filename))
-            image_path = os.path.join(target_dir, filename)
-            picture.save(image_path)
-        else:
-            image_path = None
-
-        new_product_laf = lost_and_found(
-            name=name,
-            details=details,
-            picture=filename,
-            pickup_location=pickup_location,
-            contact_info=contact_info,
-            bounty=bounty
-        )
-
-        db.session.add(new_product_laf)
-        db.session.commit()
-        return redirect(url_for('bp.online_lost_and_found'))
-    return render_template("online-lost-and-found/lost-and-found.html")
-
 
 @bp.route('/uploads-laf/<filename>')
 def uploaded_file(filename):
@@ -201,11 +150,14 @@ def uploaded_file(filename):
 def uploaded_thing(filename_ind):
     return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename_ind)
 
+@bp.route('/get_items/<category>')
+def get_items(category):
+    # Query the database to fetch items based on the category
+    # For example, assuming you have a model named 'Item' with a 'category' field
+    items = Products.query.filter_by(category=category).all()
 
-@bp.route("/online-lost-and-found", methods=['GET'])
-def online_lost_and_found():
-    products = lost_and_found.query.all()
-    id = session['existing_user_login.id']
-    info = UserInfo.query.filter_by(id=id).first()
-    user_info = info.username
-    return render_template('online-lost-and-found/lost-and-found.html', products=products, user_info=user_info)
+    # Convert items to a list of dictionaries (or any other format you prefer)
+    items_list = [{'name': item.name, 'category': item.category} for item in items]
+
+    # Return the items as JSON response
+    return jsonify(items_list)

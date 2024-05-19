@@ -4,6 +4,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
     <title>ApocAlley</title>
     <link rel="icon" href="../static/images/Icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head> 
 <body>
     <header>
@@ -15,24 +16,37 @@
         </form>
 
         {% if session['logged_in'] %}
-            <div>
-                <svg aria-hidden="true" class="pre-nav-design-icon" style="margin-right: 4em;" focusable="false" viewBox="0 0 24 24" role="img" width="24px" height="24px" fill="none" data-var="glyph" onmouseover="myProfilePopup()" onmouseout="myProfilePopupOff()"><path fill="currentColor" d="M12 3a4.5 4.5 0 00-4.5 4.5H9a3 3 0 013-3V3zM7.5 7.5A4.5 4.5 0 0012 12v-1.5a3 3 0 01-3-3H7.5zM12 12a4.5 4.5 0 004.5-4.5H15a3 3 0 01-3 3V12zm4.5-4.5A4.5 4.5 0 0012 3v1.5a3 3 0 013 3h1.5zM4.5 21v-3H3v3h1.5zm0-3a3 3 0 013-3v-1.5A4.5 4.5 0 003 18h1.5zm3-3h9v-1.5h-9V15zm9 0a3 3 0 013 3H21a4.5 4.5 0 00-4.5-4.5V15zm3 3v3H21v-3h-1.5z"></path></svg>
+            <div id="profile-container">
+                <svg id="profile-icon" aria-hidden="true" class="pre-nav-design-icon" focusable="false" viewBox="0 0 24 24" role="img" width="24px" height="24px" fill="none" data-var="glyph" onmouseover="myProfilePopup()" onmouseout="myProfilePopupOff()">
+                    <path fill="currentColor" d="M12 3a4.5 4.5 0 00-4.5 4.5H9a3 3 0 013-3V3zM7.5 7.5A4.5 4.5 0 0012 12v-1.5a3 3 0 01-3-3H7.5zM12 12a4.5 4.5 0 004.5-4.5H15a3 3 0 01-3 3V12zm4.5-4.5A4.5 4.5 0 0012 3v1.5a3 3 0 013 3h1.5zM4.5 21v-3H3v3h1.5zm0-3a3 3 0 013-3v-1.5A4.5 4.5 0 003 18h1.5zm3-3h9v-1.5h-9V15zm9 0a3 3 0 013 3H21a4.5 4.5 0 00-4.5-4.5V15zm3 3v3H21v-3h-1.5z"></path>
+                </svg>
+                <div id="profile-popup" class="w3-dropdown-content w3-bar-block w3-border">
+                    <a href="{{ url_for ('bp.donateItem') }}" class="w3-bar-item w3-button">Donate</a>
+                    <a href="{{ url_for('bp.logout') }}" class="w3-bar-item w3-button">Logout</a>
+                </div>
             </div>
         {% else %}
             <button type="button" id="login-signup-popup-button" onclick="openPopup()">Login/Signup</button>
-            <a href="{{ url_for('bp.online_lost_and_found') }}">Online </a>
         {% endif %}
 
         <div id="profile-popup" style="display: none;" onmouseover="myProfilePopup()" onmouseout="myProfilePopupOff()">
-            <h3>{{ user_info }}</h3>
+            <h3 style="overflow: hidden;">{{ user_info }}</h3>
             <a href="{{ url_for('bp.donateItem') }}">Donate</a>
             <a href="{{ url_for('bp.logout') }}">Log Out</a>
-            <a href="{{ url_for('bp.online_lost_and_found') }}">online_lost_and_found</a>
         </div>
-
-        <button type="button" id="find-people-near-me" onclick="getIPAddress()">Find people near me</button>
     </header>
     <main>
+        <div class="categories">
+            <h2>Categories</h2>
+            <div class="category" onclick="fetchItems('apparel')">
+                <img src="apparel-icon.png" alt="Apparel Icon">
+                <span>Apparel</span>
+            </div>
+            <div class="category" onclick="fetchItems('electronics')">
+                <img src="electronics-icon.png" alt="Electronics Icon">
+                <span>Electronics</span>
+            </div>
+        </div>
         <div class="products">
             {% for product in products %}
                 <div id="item{{ product.id }}" class="product-items" onclick="itemClick({{ product.id }})">

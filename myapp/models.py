@@ -34,6 +34,7 @@ class Products(db.Model):
     pickup_location = db.Column(db.String(200), nullable=False)
     contact_info = db.Column(db.String(300), nullable=False)
     rad_type = db.Column(db.String(50), nullable=False)
+    category = db.Column(db.String(50), nullable=False) 
 
 
 class lost_and_found(db.Model):

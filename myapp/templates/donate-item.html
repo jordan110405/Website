@@ -6,50 +6,53 @@
 </head>
 <body>
     <header>
-        <img id="logoImage" src="../static/images/logo1.png" width="110" height="100">
+        <img id="logo_house" src="../static/images/LongLogo.png" height="50" style="padding-top: 0.6em; padding-bottom: 0.6em;">
     </header>
     <main>
         <h1 style="text-align: center; padding-top: 0.5em;">List your item</h1>
         <div id="item-name">
             <form method="POST" action="/donate-item" enctype="multipart/form-data">
                 {{ form.hidden_tag() }}
-                <h2>Item name</h2>
-                <input type="text" placeholder="Click here to type" name="name" required>
-                <br>
-                <br>
                 <h2>Item image</h2>
                 <input type="file" name="picture" placeholder="Upload image">
-                <br>
-                <br>
+                <br><br>
+                <h2>Item name</h2>
+                <input type="text" placeholder="Click here to type" name="name" required>              
+                <br><br>
+                <h2>Item details</h2>
+                <h6>List all the details about your item.</h6>
+                <textarea id="specifics" name="details" rows="10" cols="120" placeholder="Click here to type"></textarea>
+                <br><br>
                 <h2>Item type</h2>
                 <h6>Choose the option that best fits your item</h6>
                 <div class="radio-group">
                     <!-- Radio button for Items -->
                     <div>
-                        <input type="radio" class="rad_type radio" name="rad_type" value="items">
-                        <label for="rad_type">Items</label>
+                        <input type="radio" class="rad_type radio" name="rad_type" value="items" id="itemss">
+                        <label for="itemss">Items</label>
                     </div>
                     <br>
                     <div>
                         <!-- Radio button for Services -->
-                        <input type="radio" class="rad_type radio" name="rad_type" value="services">
-                        <label for="rad_type">Services</label>
+                        <input type="radio" class="rad_type radio" name="rad_type" value="services" id="servicess">
+                        <label for="servicess">Services</label>
                     </div>
                 </div>
-                <br>
-                <br>
-                <h2>Item details</h2>
-                <h6>List all the details about your item.</h6>
-                <textarea id="specifics" name="details" rows="10" cols="120" placeholder="Click here to type"></textarea>
-                <br>
-                <br>
-                <br>
+                <br><br>
+                <h2>Category</h2>
+                <select id="category">
+                    <option value="apparel">Apparel</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="books">Books</option>
+                    <option value="home">Home</option>
+                    <!-- Add more options as needed -->
+                </select>
+                <br><br>
                 <h2>Location</h2>
                 <h6>Please enter a location where people can pick up your item.</h6>
                 <input type="text" id="locationInput" name="pickup_location" placeholder="Click here to type">
                 <div id="locationDropDown"></div>
-                <br>
-                <br>
+                <br><br>
                 <h2>Contact Info</h2>
                 <h6>Enter your email or your phone number</h6>
                 <input id="contact_info" name="contact_info" placeholder="Click here to type">

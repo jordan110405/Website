@@ -3,7 +3,6 @@
 * {
     margin: 0;
     padding: 0;
-    overflow-x: visible;
 }
 body{
     background-color: #cde0c4;
@@ -177,13 +176,30 @@ form input {
     cursor: pointer;
 }
 
+#profile-container {
+    position: relative;
+    display: inline-block;
+}
+
+#profile-icon {
+    cursor: pointer;
+    margin-right: 9em;
+}
+
 #profile-popup {
+    z-index: 1000;
+    margin-right: 8em;
     position: absolute;
-    margin-top: 5em; /* Place the popup below the SVG */
-    background-color: white;
+    background-color: rgb(130, 187, 16);
     padding: 10px;
-    margin-left: 68em;
-    display: none; /* Initially hide the popup */
+    display: none;
+    top: 100%; /* Position it directly below the icon */
+    right: 0; /* Align to the right edge of the icon */
+    transition: all 0.3s;
+}
+
+#profile-container:hover #profile-popup {
+    display: block;
 }
 
 
@@ -210,7 +226,6 @@ form input {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: .6em;
-    overflow: visible;
 }
 
 .product-items {
@@ -225,4 +240,23 @@ form input {
     transform: scale(1.06, 1.06);
     cursor: pointer;
     z-index: 2;
+}
+
+
+.categories {
+  float: left;
+  width: 30%; /* Adjust as needed */
+}
+
+.category {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.category img {
+  width: 30px; /* Adjust icon size as needed */
+  height: 30px;
+  margin-right: 10px;
 }

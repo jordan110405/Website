@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, FileField, RadioField
+from wtforms import StringField, TextAreaField, FileField, RadioField, SelectField
 from wtforms.validators import DataRequired
 
 
@@ -19,3 +19,4 @@ class ProductForm(FlaskForm):
     pickup_location = StringField('pickup_location')
     contact_info = StringField('contact_info')
     rad_type = RadioField('Type', choices=[('items', 'Items'), ('services', 'Services')], validators=[DataRequired()])
+    category = SelectField('Category', choices=[('apparel', 'Apparel'), ('electronics', 'Electronics')], validators=[DataRequired()])
