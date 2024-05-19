@@ -198,6 +198,11 @@ form input {
     transition: all 0.3s;
 }
 
+#profile-popup a {
+    display: block !important;
+    z-index: 100010240120401 !important;
+}
+
 #profile-container:hover #profile-popup {
     display: block;
 }
