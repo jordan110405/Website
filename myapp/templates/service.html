@@ -85,7 +85,8 @@
                 <div id="item{{ product.id }}" class="product-items" onclick="itemClick({{ product.id }})">
                     <h2>{{ product.name }}</h2>
                     <img src="{{ url_for('bp.static', filename='uploads/' + product.picture) }}" alt="Item Picture" height="200">
-                    <h3><strong>{{ product.blue }}</strong> blue caps</h3>
+                    <h3><strong>{{ product.blue }}</strong> blue caps</h3> 
+                    <img src="../static/images/blue.png" alt="blue">
                     <p>{{ product.details }}</p>
                 </div>
             {% endfor %}

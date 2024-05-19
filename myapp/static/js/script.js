@@ -78,10 +78,15 @@ function displayItems(items) {
         itemElement.id = `item${item.id}`;
 
         itemElement.innerHTML = `
-            <div class="product-items">
+                <div class="product-items">
                 <h2>${item.name}</h2>
                 <img src="/static/uploads/${item.picture}" alt="Item Picture" height="200">
-                <h3><strong>${item.blue}</strong> blue caps</h3>
+                <div>
+                <div style="display: flex; align-items: center; justify-content: center;">
+                <h3><strong>52</strong></h3>
+                <img src="../static/images/blue.png" alt="blue" style="width: 30px; height: auto; margin-left: 5px;">
+                </div>               
+                </div>
                 <p>${item.details}</p>
             </div>
         `;
