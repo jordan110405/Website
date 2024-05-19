@@ -27,17 +27,13 @@
             </div>
         {% else %}
             <button type="button" id="login-signup-popup-button" onclick="openPopup()">Login/Signup</button>
-            <a href="{{ url_for('bp.online_lost_and_found') }}">Online </a>
         {% endif %}
 
         <div id="profile-popup" style="display: none;" onmouseover="myProfilePopup()" onmouseout="myProfilePopupOff()">
             <h3 style="overflow: hidden;">{{ user_info }}</h3>
             <a href="{{ url_for('bp.donateItem') }}">Donate</a>
             <a href="{{ url_for('bp.logout') }}">Log Out</a>
-            <a href="{{ url_for('bp.online_lost_and_found') }}">online_lost_and_found</a>
         </div>
-
-        <button type="button" id="find-people-near-me" onclick="getIPAddress()">Find people near me</button>
     </header>
     <main>
         <div class="categories">
